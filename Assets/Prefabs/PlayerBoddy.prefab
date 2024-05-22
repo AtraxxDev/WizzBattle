@@ -15,8 +15,8 @@ GameObject:
   - component: {fileID: 3112837348893093627}
   - component: {fileID: 1713047390807276695}
   - component: {fileID: 381621774247212715}
-  - component: {fileID: 5980182700134320511}
-  - component: {fileID: 7781635862897770832}
+  - component: {fileID: 8256729591768993131}
+  - component: {fileID: 3690136211063560140}
   m_Layer: 0
   m_Name: PlayerBoddy
   m_TagString: Untagged
@@ -174,7 +174,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 400
---- !u!114 &5980182700134320511
+--- !u!114 &8256729591768993131
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -183,7 +183,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1712325214692614838}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Script: {fileID: 11500000, guid: c649c3f9905f5d546adbe42af0c43b72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   UseUnreliableDeltas: 0
@@ -205,7 +205,7 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   SlerpPosition: 0
---- !u!114 &7781635862897770832
+--- !u!114 &3690136211063560140
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
