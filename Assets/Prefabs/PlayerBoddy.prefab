@@ -32,7 +32,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1712325214692614838}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.2497001, z: 0}
   m_LocalScale: {x: 1, y: 0.75, z: 1}
   m_ConstrainProportionsScale: 0
@@ -137,7 +137,7 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 84
   m_CollisionDetection: 1
 --- !u!114 &1713047390807276695
@@ -152,8 +152,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2232096876
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  GlobalObjectIdHash: 1002120627
+  InScenePlacedSourceGlobalObjectIdHash: 134833710
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -244,13 +244,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7469143790695227405}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.6983493, y: -0, z: -0, w: 0.71575713}
-  m_LocalPosition: {x: -0.596, y: 0.53773344, z: 0.015}
+  m_LocalRotation: {x: -0.49132603, y: 0.50864726, z: 0.49627635, w: 0.50357366}
+  m_LocalPosition: {x: 0.1, y: 0.53773344, z: 0.523}
   m_LocalScale: {x: 0.25, y: 0.25003788, z: 0.33326602}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3792822564824656092}
-  m_LocalEulerAnglesHint: {x: -88.589, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -88.589, y: 90.574, z: 0}
 --- !u!33 &8704364871171305191
 MeshFilter:
   m_ObjectHideFlags: 0

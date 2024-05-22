@@ -20,23 +20,34 @@ public class PlayerMovement : NetworkBehaviour
 
     private void FixedUpdate()
     {
-        if (!IsOwner) return; 
+        PlayerMov();
+        FacingCamera();
+       
+    }
+
+    private void PlayerMov()
+    {
+        if (!IsOwner) return;
         //Movimiento
         float moveHoritzontal = Input.GetAxisRaw("Horizontal");
         float moveVertical = Input.GetAxisRaw("Vertical");
 
-        Vector3 movement=new Vector3(moveHoritzontal,0.0f,moveVertical);
+        Vector3 movement = new Vector3(moveHoritzontal, 0.0f, moveVertical);
 
         rb.AddForce(Vector3.ClampMagnitude(movement, 1) * speed);
 
+    }
+
+    private void FacingCamera()
+    {
         //Mouse
         Ray cameraRay = mainCamera.ScreenPointToRay(Input.mousePosition);
         Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
         float rayLength;
 
-        if(groundPlane.Raycast(cameraRay,out rayLength))
+        if (groundPlane.Raycast(cameraRay, out rayLength))
         {
-            Vector3 pointToLook=cameraRay.GetPoint(rayLength);
+            Vector3 pointToLook = cameraRay.GetPoint(rayLength);
             Debug.DrawLine(cameraRay.origin, pointToLook, Color.blue);
 
             transform.LookAt(new Vector3(pointToLook.x, transform.position.y, pointToLook.z));
