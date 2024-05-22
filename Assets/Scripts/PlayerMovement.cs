@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class PlayerMovement : MonoBehaviour
+
+public class PlayerMovement : NetworkBehaviour
 {
     public float speed = 400f;
 
@@ -18,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!IsOwner) return; 
         //Movimiento
         float moveHoritzontal = Input.GetAxisRaw("Horizontal");
         float moveVertical = Input.GetAxisRaw("Vertical");
