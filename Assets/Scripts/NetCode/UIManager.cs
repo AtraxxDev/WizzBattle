@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class NetworkManagerUI : MonoBehaviour
+public class UIManager : MonoBehaviour
 {
     [Header("Server Config")]
     [SerializeField] private Button server_Btn;
@@ -18,6 +18,7 @@ public class NetworkManagerUI : MonoBehaviour
     [Space(5)]
     [Header("UI")]
     public GameObject bg;
+
 
 
     private void Awake()
@@ -48,6 +49,7 @@ public class NetworkManagerUI : MonoBehaviour
                 NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData(ipAddress, port);
                 bg.SetActive(false);
                 NetworkManager.Singleton.StartHost();
+
             }
             else
             {
@@ -67,6 +69,7 @@ public class NetworkManagerUI : MonoBehaviour
                 NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData(ipAddress, port);
                 bg.SetActive(false);
                 NetworkManager.Singleton.StartClient();
+
             }
             else
             {
@@ -87,5 +90,6 @@ public class NetworkManagerUI : MonoBehaviour
         client_Btn.interactable = isIPValid && isPortValid;
     }
 
-   
+  
+
 }

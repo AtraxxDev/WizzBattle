@@ -4,7 +4,7 @@ using Unity.Netcode;
 
 public class NetworkDisconnectHandler : MonoBehaviour
 {
-    [SerializeField] private NetworkManagerUI m_NetworkManagerUI;
+    [SerializeField] private UIManager m_UIManager;
     private void Awake()
     {
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnect;
@@ -38,7 +38,7 @@ public class NetworkDisconnectHandler : MonoBehaviour
 
     private void ReturnToMenu()
     {
-        m_NetworkManagerUI.bg.SetActive(true);
+        m_UIManager.bg.SetActive(true);
         // Carga la escena de menú (asegúrate de que la escena esté incluida en Build Settings)
        // SceneManager.LoadScene("MenuScene");
     }
