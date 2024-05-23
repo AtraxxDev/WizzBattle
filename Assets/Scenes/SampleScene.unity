@@ -245,10 +245,6 @@ MonoBehaviour:
   ipInputField: {fileID: 1464545919}
   portInputField: {fileID: 1294071917}
   bg: {fileID: 1376384686}
-  lobbyManager: {fileID: 614539626}
-  lobbyNameInput: {fileID: 0}
-  lobbyCodeInput: {fileID: 2123470431}
-  bg_lobby: {fileID: 1313777273}
 --- !u!1 &233534393
 GameObject:
   m_ObjectHideFlags: 0
@@ -857,8 +853,6 @@ GameObject:
   - component: {fileID: 614539623}
   - component: {fileID: 614539622}
   - component: {fileID: 614539624}
-  - component: {fileID: 614539626}
-  - component: {fileID: 614539625}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -959,30 +953,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UIManager: {fileID: 25532962}
---- !u!114 &614539625
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 614539620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce1779de430bc2e4699c1c1985618bd5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &614539626
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 614539620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bdd6c50ef0545b04aae6b5bc94091c8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &662756886
 GameObject:
   m_ObjectHideFlags: 0
