@@ -3,44 +3,45 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-
 public class PlayerMovement : NetworkBehaviour
 {
     public float speed = 400f;
 
     private Rigidbody rb;
-
     private Camera mainCamera;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        mainCamera=FindObjectOfType<Camera>(); 
+        if (IsOwner)
+        {
+            mainCamera = Camera.main;
+        }
     }
 
     private void FixedUpdate()
     {
-        PlayerMov();
-        FacingCamera();
-       
+        if (IsOwner)
+        {
+            PlayerMov();
+            FacingCamera();
+        }
     }
 
     private void PlayerMov()
     {
-        if (!IsOwner) return;
-        //Movimiento
-        float moveHoritzontal = Input.GetAxisRaw("Horizontal");
+        // Movimiento
+        float moveHorizontal = Input.GetAxisRaw("Horizontal");
         float moveVertical = Input.GetAxisRaw("Vertical");
 
-        Vector3 movement = new Vector3(moveHoritzontal, 0.0f, moveVertical);
+        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
 
         rb.AddForce(Vector3.ClampMagnitude(movement, 1) * speed);
-
     }
 
     private void FacingCamera()
     {
-        //Mouse
+        // Mouse
         Ray cameraRay = mainCamera.ScreenPointToRay(Input.mousePosition);
         Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
         float rayLength;

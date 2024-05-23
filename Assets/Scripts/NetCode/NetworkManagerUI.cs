@@ -17,7 +17,7 @@ public class NetworkManagerUI : MonoBehaviour
 
     [Space(5)]
     [Header("UI")]
-    [SerializeField] private GameObject bg;
+    public GameObject bg;
 
 
     private void Awake()
