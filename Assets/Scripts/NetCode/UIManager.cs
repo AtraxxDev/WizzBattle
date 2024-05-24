@@ -18,6 +18,7 @@ public class UIManager : MonoBehaviour
     [Space(5)]
     [Header("UI")]
     public GameObject bg;
+    public LobbyManager lobbyManager;
 
 
 
@@ -49,6 +50,7 @@ public class UIManager : MonoBehaviour
                 NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData(ipAddress, port);
                 bg.SetActive(false);
                 NetworkManager.Singleton.StartHost();
+                lobbyManager.CreateLobby();
 
             }
             else

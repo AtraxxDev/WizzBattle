@@ -10,6 +10,8 @@ public class PlayerMovement : NetworkBehaviour
     private Rigidbody rb;
     private Camera mainCamera;
 
+
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -26,6 +28,8 @@ public class PlayerMovement : NetworkBehaviour
             PlayerMov();
             FacingCamera();
         }
+
+
     }
 
     private void PlayerMov()

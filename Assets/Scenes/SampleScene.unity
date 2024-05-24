@@ -245,6 +245,7 @@ MonoBehaviour:
   ipInputField: {fileID: 1464545919}
   portInputField: {fileID: 1294071917}
   bg: {fileID: 1376384686}
+  lobbyManager: {fileID: 614539625}
 --- !u!1 &233534393
 GameObject:
   m_ObjectHideFlags: 0
@@ -853,6 +854,8 @@ GameObject:
   - component: {fileID: 614539623}
   - component: {fileID: 614539622}
   - component: {fileID: 614539624}
+  - component: {fileID: 614539626}
+  - component: {fileID: 614539625}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -953,6 +956,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UIManager: {fileID: 25532962}
+--- !u!114 &614539625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 614539620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8f7b96ab7c801f4893b18b0440dd8ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &614539626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 614539620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce1779de430bc2e4699c1c1985618bd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &662756886
 GameObject:
   m_ObjectHideFlags: 0
@@ -1411,9 +1438,9 @@ RectTransform:
   - {fileID: 701077592}
   m_Father: {fileID: 2032701908}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 190, y: -40}
   m_SizeDelta: {x: 380, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1037372232
@@ -3068,7 +3095,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1313777274
 RectTransform:
   m_ObjectHideFlags: 0
