@@ -42,6 +42,15 @@ public class LobbyManager : MonoBehaviour
         HandleLobbyHeartbeat();
         HandleLobbyPollForUpdates();
 
+        if (joinedLobby != null && joinedLobby.HostId == AuthenticationService.Instance.PlayerId)
+        {
+            lobbyTextCode.gameObject.SetActive(true); // Si el jugador es el host, muestra el texto del código de lobby
+        }
+        else
+        {
+            lobbyTextCode.gameObject.SetActive(false); // Si el jugador no es el host, oculta el texto del código de lobby
+        }
+
     }
 
     private async void HandleLobbyHeartbeat()
