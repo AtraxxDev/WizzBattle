@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
-using CustomInspector;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using System.Threading.Tasks;
-
-
+using System;
+using TMPro;
 
 public class LobbyManager : MonoBehaviour
 {
-    [SerializeField] string Lobbycode;
+    [SerializeField] private TMP_Text lobbyTextCode;
     private Lobby hostLobby;
     private Lobby joinedLobby;
     private float heartbeatTimer;
@@ -35,26 +34,14 @@ public class LobbyManager : MonoBehaviour
     private async Task SignInAnonymouslyAsync()
     {
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
-        playerName = "Atraxx" + UnityEngine.Random.Range(10, 99);
         Debug.Log(playerName);
     }
 
     private void Update()
     {
-
         HandleLobbyHeartbeat();
         HandleLobbyPollForUpdates();
 
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            ListLobbies();
-        }
-
-        if (Input.GetKeyDown(KeyCode.KeypadEnter))
-        {
-            JoinLobbybyCode(Lobbycode);
-        }
     }
 
     private async void HandleLobbyHeartbeat()
@@ -67,7 +54,7 @@ public class LobbyManager : MonoBehaviour
                 float heartbeatTimerMax = 15;
                 heartbeatTimer = heartbeatTimerMax;
 
-               await LobbyService.Instance.SendHeartbeatPingAsync(hostLobby.Id);
+                await LobbyService.Instance.SendHeartbeatPingAsync(hostLobby.Id);
             }
         }
     }
@@ -82,42 +69,38 @@ public class LobbyManager : MonoBehaviour
                 float lobbyUpdateTimerMax = 1.1f;
                 lobbyUpdateTimer = lobbyUpdateTimerMax;
 
-              Lobby lobby =  await LobbyService.Instance.GetLobbyAsync(joinedLobby.Id);
+                Lobby lobby = await LobbyService.Instance.GetLobbyAsync(joinedLobby.Id);
                 joinedLobby = lobby;
             }
         }
     }
 
-
     public async void CreateLobby()
     {
         try
         {
-
-        string lobbyName = "My Lobby ";
-        int maxPlayers = 4;
+            string lobbyName = playerName + " Lobby ";
+            int maxPlayers = 4;
             CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions
             {
-                IsPrivate = false, // Estado del lobby si es privado o no.
+                IsPrivate = false,
                 Player = GetPlayer(),
                 Data = new Dictionary<string, DataObject>
                 {
-                    { "GameMode", new DataObject(DataObject.VisibilityOptions.Public,"Capture the flag")}, // Define un Modo de juego
-                    { "Map", new DataObject(DataObject.VisibilityOptions.Public,"Risk")}
+                    { "GameMode", new DataObject(DataObject.VisibilityOptions.Public, "Capture the flag") },
+                    { "Map", new DataObject(DataObject.VisibilityOptions.Public, "Risk") }
                 }
-
             };
 
-
-        Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, createLobbyOptions);
+            Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, createLobbyOptions);
 
             hostLobby = lobby;
             joinedLobby = hostLobby;
 
+            Debug.Log("Created Lobby!: " + lobby.Name + " " + lobby.MaxPlayers + " " + lobby.Id + " " + lobby.LobbyCode);
+            PrintPlayers(hostLobby);
 
-        Debug.Log("Created Lobby!: " + lobby.Name + " " + lobby.MaxPlayers + " " + lobby.Id + " " + lobby.LobbyCode);
-            PrintPLayers(hostLobby);
-
+            lobbyTextCode.text = lobby.LobbyCode;
         }
         catch (LobbyServiceException e)
         {
@@ -133,13 +116,11 @@ public class LobbyManager : MonoBehaviour
             {
                 Player = GetPlayer()
             };
-         Lobby lobby = await Lobbies.Instance.JoinLobbyByCodeAsync(lobbyCode, joinLobbyByCodeOptions);
+            Lobby lobby = await Lobbies.Instance.JoinLobbyByCodeAsync(lobbyCode, joinLobbyByCodeOptions);
             joinedLobby = lobby;
 
             Debug.Log("Joined Lobby with code " + lobbyCode);
-            PrintPLayers(lobby);
-
-
+            PrintPlayers(lobby);
         }
         catch (LobbyServiceException e)
         {
@@ -147,7 +128,11 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
-    public async void ListLobbies()
+
+
+
+
+    public async void ListLobbies(Action<List<Lobby>> onLobbiesReceived)
     {
         try
         {
@@ -155,21 +140,22 @@ public class LobbyManager : MonoBehaviour
             {
                 Count = 25,
                 Filters = new List<QueryFilter>
-                {
-                    new QueryFilter(QueryFilter.FieldOptions.AvailableSlots,"0",QueryFilter.OpOptions.GT),
-                    //new QueryFilter(QueryFilter.FieldOptions.S1,"Capture the flag", QueryFilter.OpOptions.EQ)
-                },
+            {
+                new QueryFilter(QueryFilter.FieldOptions.AvailableSlots, "0", QueryFilter.OpOptions.GT),
+            },
                 Order = new List<QueryOrder>{
-                    new QueryOrder(false,QueryOrder.FieldOptions.Created)
-                }
+                new QueryOrder(false, QueryOrder.FieldOptions.Created)
+            }
             };
 
             QueryResponse queryResponse = await Lobbies.Instance.QueryLobbiesAsync(queryLobbiesOptions);
             Debug.Log("Lobbies found: " + queryResponse.Results.Count);
-            foreach (Lobby lobby in queryResponse.Results)
-            {
-                Debug.Log(lobby.Name + " " + lobby.MaxPlayers + " " + lobby.Data["GameMode"].Value + " " + lobby.Data["Map"].Value);
-            }
+
+            // Crear una lista de lobbies a partir de los resultados
+            List<Lobby> lobbies = new List<Lobby>(queryResponse.Results);
+
+            // Llamar a la función de retorno de llamada con la lista de lobbies
+            onLobbiesReceived?.Invoke(lobbies);
         }
         catch (LobbyServiceException e)
         {
@@ -183,7 +169,6 @@ public class LobbyManager : MonoBehaviour
         try
         {
             await LobbyService.Instance.QuickJoinLobbyAsync();
-
         }
         catch (LobbyServiceException e)
         {
@@ -196,19 +181,18 @@ public class LobbyManager : MonoBehaviour
         return new Player
         {
             Data = new Dictionary<string, PlayerDataObject>
-                    {
-                        {"PlayerName", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, playerName)}
-                    }
+            {
+                { "PlayerName", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, playerName) }
+            }
         };
     }
 
-    // Muestra a los jugadores en el lobby
-    public void PrintPLayers()
+    public void PrintPlayers()
     {
-        PrintPLayers(joinedLobby);
+        PrintPlayers(joinedLobby);
     }
 
-    public void PrintPLayers(Lobby lobby)
+    public void PrintPlayers(Lobby lobby)
     {
         Debug.Log("Players in Lobby: " + lobby.Name + " " + lobby.Data["GameMode"].Value + " " + lobby.Data["Map"].Value);
         foreach (Player player in lobby.Players)
@@ -217,18 +201,16 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
-
-    // Esta funcion modifca el modo de juego de tu juego ejemplo: Deathmatch, CaptureFlag, One Bullet etc.
     private async void UpdateLobbyGameMode(string gamemode)
     {
         try
         {
-           hostLobby = await Lobbies.Instance.UpdateLobbyAsync(hostLobby.Id, new UpdateLobbyOptions
+            hostLobby = await Lobbies.Instance.UpdateLobbyAsync(hostLobby.Id, new UpdateLobbyOptions
             {
                 Data = new Dictionary<string, DataObject>
-            {
-                { "GameMode",new DataObject(DataObject.VisibilityOptions.Public,gamemode)}
-            }
+                {
+                    { "GameMode", new DataObject(DataObject.VisibilityOptions.Public, gamemode) }
+                }
             });
             joinedLobby = hostLobby;
         }
@@ -236,8 +218,6 @@ public class LobbyManager : MonoBehaviour
         {
             Debug.Log(e);
         }
-
-
     }
 
     private async void UpdateLobbyMap(string map)
@@ -247,30 +227,8 @@ public class LobbyManager : MonoBehaviour
             hostLobby = await Lobbies.Instance.UpdateLobbyAsync(hostLobby.Id, new UpdateLobbyOptions
             {
                 Data = new Dictionary<string, DataObject>
-            {
-                { "Map",new DataObject(DataObject.VisibilityOptions.Public,map)}
-            }
-            });
-        }
-        catch (LobbyServiceException e)
-        {
-            Debug.Log(e);
-        }
-
-
-    }
-
-    // Esta funcion se usa para cambair el username en tiempo real
-    public async void UpdatePlayerName(string newPlayername)
-    {
-        try
-        {
-            playerName = newPlayername;
-           await LobbyService.Instance.UpdatePlayerAsync(joinedLobby.Id, AuthenticationService.Instance.PlayerId, new UpdatePlayerOptions
-            {
-                Data = new Dictionary<string, PlayerDataObject>
                 {
-                  {"PlayerName", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, playerName)}
+                    { "Map", new DataObject(DataObject.VisibilityOptions.Public, map) }
                 }
             });
         }
@@ -278,28 +236,45 @@ public class LobbyManager : MonoBehaviour
         {
             Debug.Log(e);
         }
+    }
 
+    
+    public async void UpdatePlayerName(string newPlayername)
+    {
+        try
+        {
+            playerName = newPlayername;
+            await LobbyService.Instance.UpdatePlayerAsync(joinedLobby.Id, AuthenticationService.Instance.PlayerId, new UpdatePlayerOptions
+            {
+                Data = new Dictionary<string, PlayerDataObject>
+                {
+                    { "PlayerName", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, playerName) }
+                }
+            });
+        }
+        catch (LobbyServiceException e)
+        {
+            Debug.Log(e);
+        }
     }
 
     public async void LeaveLobby()
     {
         try
         {
-           await LobbyService.Instance.RemovePlayerAsync(joinedLobby.Id, AuthenticationService.Instance.PlayerId);
+            await LobbyService.Instance.RemovePlayerAsync(joinedLobby.Id, AuthenticationService.Instance.PlayerId);
         }
         catch (LobbyServiceException e)
         {
             Debug.Log(e);
         }
-
     }
 
-    // Esta funcion sirve para echar al jugador de lobby a la fuerza
     public async void KickPlayer()
     {
         try
         {
-            await LobbyService.Instance.RemovePlayerAsync(joinedLobby.Id, joinedLobby.Players[1].Id); // el Players[1] el numero 1 indica el jugador que vas a echar empezando el player 1 como el 0 de su ID
+            await LobbyService.Instance.RemovePlayerAsync(joinedLobby.Id, joinedLobby.Players[1].Id);
         }
         catch (LobbyServiceException e)
         {
@@ -323,16 +298,26 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
-
     public async void DeleteLobby()
     {
         try
         {
-           await LobbyService.Instance.DeleteLobbyAsync(joinedLobby.Id);
+            await LobbyService.Instance.DeleteLobbyAsync(joinedLobby.Id);
         }
         catch (LobbyServiceException e)
         {
             Debug.Log(e);
         }
     }
+
+    public void SetPlayerName(string name)
+    {
+        playerName = name + UnityEngine.Random.Range(10, 99);
+    }
+
+    public void JoinLobbyCode(Lobby lobby)
+    {
+        JoinLobbybyCode(lobby.LobbyCode);
+    }
+
 }
