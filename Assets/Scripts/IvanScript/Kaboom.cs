@@ -57,6 +57,8 @@ public class Kaboom : MonoBehaviour
 
     private IEnumerator Boom()
     {
+        //m_AudioSource.PlayOneShot(_explosion);
+        _explosionEffect.Play();
 
         Collider[] colliders=Physics.OverlapSphere(transform.position,radius);
 
@@ -67,14 +69,12 @@ public class Kaboom : MonoBehaviour
             {
                 //m_AudioSource.PlayOneShot(_Hurt);                
                 rig.AddExplosionForce(explosionForce, transform.position, radius, 2f, ForceMode.Impulse);
+                PlayerHealth health = rig.gameObject.GetComponent<PlayerHealth>();
+                if (health != null) health.TakeDamage(2);
                 //ApplyDAmage(rig.gameObject.GetComponent<Health>(); Esta función ya la tiene en PlayerHealth
             }
-        }
-
-        //m_AudioSource.PlayOneShot(_explosion);
-       _explosionEffect.Play();
-
-        yield return new WaitForSeconds(1);        
+        }       
+        yield return new WaitForSeconds(_explosionEffect.main.duration);        
 
         ReturnToPool();
     }
@@ -90,27 +90,5 @@ public class Kaboom : MonoBehaviour
         }
     }
 
-    /*
-    [SerializeField] private AudioSource m_AudioSource;
-    [SerializeField] private AudioClip _Hurt;
-    [SerializeField] private AudioClip _explosion;
-    [SerializeField] private ParticleSystem _explosiónPartycle;
-    private GameObject _mine;
 
-    private void Start()
-    {
-        _explosiónPartycle.Stop();
-        _mine= GetComponent<GameObject>();
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.tag=="Player")
-        {
-            _explosiónPartycle.Play();
-            m_AudioSource.PlayOneShot(_Hurt);
-            m_AudioSource.PlayOneShot(_explosion);
-            _mine.GetComponent<MeshRenderer>().enabled = false;
-        }
-    }*/
 }

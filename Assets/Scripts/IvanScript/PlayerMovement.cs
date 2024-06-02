@@ -112,10 +112,10 @@ public class PlayerMovement : NetworkBehaviour
             playerHealth.TakeDamage(1);
            // Debug.Log(playerHealth.ToString());
         }
-        if(collision.gameObject.CompareTag("Bomb"))
+        /*if(collision.gameObject.CompareTag("Bomb"))
         {
             playerHealth.TakeDamage(2);
-        }
+        }*/
 
     }
 
