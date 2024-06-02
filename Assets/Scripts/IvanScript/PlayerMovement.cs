@@ -24,7 +24,7 @@ public class PlayerMovement : NetworkBehaviour
 
     private Rigidbody rb;
     private Camera mainCamera;
-
+    [SerializeField]private PlayerHealth playerHealth;
 
 
     private void Start()
@@ -34,6 +34,7 @@ public class PlayerMovement : NetworkBehaviour
         {
             mainCamera = Camera.main;
         }
+        playerHealth = GetComponent<PlayerHealth>();
     }
 
     private void FixedUpdate()
@@ -104,19 +105,18 @@ public class PlayerMovement : NetworkBehaviour
 
     }
 
-    private void DrawLine()
+    private void OnCollisionEnter(Collision collision)
     {
-        //De aquí va a salir la linea desde el FirePoint del Jugador
-        _lineRenderer.SetPosition(0,_lineTransform.position);
+        if (collision.gameObject.CompareTag("Projectile"))
+        {
+            playerHealth.TakeDamage(1);
+           // Debug.Log(playerHealth.ToString());
+        }
+        if(collision.gameObject.CompareTag("Bomb"))
+        {
+            playerHealth.TakeDamage(2);
+        }
 
-        if(Physics.Raycast(_lineTransform.position, _lineTransform.forward,out hit, defaultLength,layerMask))
-        {
-            _lineRenderer.SetPosition(1, hit.point);
-        }
-        else
-        {
-            _lineRenderer.SetPosition(1, _lineTransform.position + (_lineTransform.forward * defaultLength));
-        }
     }
 
 }
