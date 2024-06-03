@@ -20,6 +20,7 @@ public class PlayerMovement : NetworkBehaviour
 
 
     [Space]
+    public bool playerDed=false;
     [SerializeField] private float speed = 400f;
 
     private Rigidbody rb;
@@ -39,12 +40,13 @@ public class PlayerMovement : NetworkBehaviour
 
     private void FixedUpdate()
     {
-        if (IsOwner)
+        if (IsOwner && !playerDed)
         {
             PlayerMov();
             FacingCamera();
             DrawLaser();
-           // DrawLineOld();
+            rb.detectCollisions = true;
+            // DrawLineOld();
         }
     }
 

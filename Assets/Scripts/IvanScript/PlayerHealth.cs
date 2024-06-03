@@ -7,10 +7,12 @@ public class PlayerHealth : MonoBehaviour
     public int currentLives;
     [SerializeField] private int _timeforRegen=16;
     private Coroutine regenCoroutine;
+    [SerializeField]private PlayerMovement _playerRef;
 
     private void Start()
     {
-        currentLives = maxLives;
+        currentLives = maxLives;     
+        _playerRef = GetComponent<PlayerMovement>();
     }
 
     public void TakeDamage(int damage)
@@ -50,7 +52,8 @@ public class PlayerHealth : MonoBehaviour
     private void DeactivatePlayer()
     {
         Debug.Log("Player has been deactivated.");
-        gameObject.SetActive(false);
+        _playerRef.playerDed = true;
+        //gameObject.SetActive(false);
     }
 
     public int GetCurrentLives()

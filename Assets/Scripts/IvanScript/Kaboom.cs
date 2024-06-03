@@ -45,7 +45,9 @@ public class Kaboom : MonoBehaviour
 
         if (time >= lifeTime)
         {
-            Boom();
+            // Debug.Log("kABOOM");
+            StartCoroutine(Boom());
+
             rb.detectCollisions = true;
             //eturnToPool();
         }
@@ -73,20 +75,25 @@ public class Kaboom : MonoBehaviour
                 if (health != null) health.TakeDamage(2);
                 //ApplyDAmage(rig.gameObject.GetComponent<Health>(); Esta función ya la tiene en PlayerHealth
             }
-        }       
-        yield return new WaitForSeconds(_explosionEffect.main.duration);        
+        }
+       
+        yield return new WaitForSeconds(1);
 
         ReturnToPool();
     }
 
-    private void ReturnToPool()
+    public void ReturnToPool()
     {
-        ObjectPool pool = FindObjectOfType<ObjectPool>();
+        BombPool pool = FindObjectOfType<BombPool>();
         if (pool != null)
         {
            // curBounces = 0;
             pool.ReturnToPool(gameObject);
+        }
 
+        StaffScript staffScript=FindObjectOfType<StaffScript>();
+        if(staffScript != null) {
+            staffScript.HandleBombReturned();
         }
     }
 

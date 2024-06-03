@@ -7,24 +7,30 @@ public class StaffScript : MonoBehaviour
 {
     [Header("Ref")]
     [SerializeField] private Transform _firePoint;
+    [SerializeField] private Transform _bombPoint;
+    [SerializeField] private PlayerMovement _playerRef;
     public ObjectPool bulletPool;
     public BombPool bombPool;
     //public GameObject Bullet;
 
     [Space]
-    [SerializeField] private float FireRate = 1;
+    [SerializeField] private float FireRate = 5;
     [SerializeField] private float BombRate = 2;
-    [SerializeField] private float BulletForce = 100;
+    [SerializeField] private float BulletForce = 40;    
 
     private float time;
     private float nextTimeFire;
     private float timeBomb;
     private float nextTimeBomb;
+    private int activeBombs;
+    private const int maxBombs = 2;
+
 
     private void Start()
     {
         nextTimeFire = 1 / FireRate;
         nextTimeBomb = 1 / BombRate;
+        _playerRef = GetComponent<PlayerMovement>();
         //GameObject bulletPools = GameObject.Find("ObjectPool2");
         //  if(bulletPools != null )
         //bulletPool = bulletPools.GetComponent<ObjectPool>();
@@ -33,36 +39,24 @@ public class StaffScript : MonoBehaviour
     private void FixedUpdate()
     {
         time += Time.deltaTime;
-
-        if (Input.GetMouseButtonDown(0) && time >= nextTimeFire)
+        timeBomb+=Time.deltaTime;
+        if(!_playerRef.playerDed)
         {
-            FireBall();
-            time = 0;
-        }
-        if (Input.GetMouseButtonDown(1) && timeBomb >= nextTimeBomb)
-        {
-            Bombs();
-            timeBomb = 0;
-        }
-
-        /*if (time >= nextTimeFire)
-        {
-            // GameObject bullet= Instantiate(Bullet,_firePoint.position, Quaternion.identity);
-            Debug.Log("Firing Fireball");
-            GameObject bullet = bulletPool.GetFromPool();
-            bullet.transform.position = _firePoint.position;
-            bullet.transform.rotation = Quaternion.identity;
-
-            Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
-            if (bulletRb != null)
+            if (Input.GetMouseButton(0) && time >= nextTimeFire)
             {
-                bulletRb.velocity = Vector3.zero;
-                bulletRb.AddForce(_firePoint.forward * BulletForce);
+                //Debug.Log("Pum");
+                FireBall();
+                time = 0;
             }
-            //bullet.GetComponent<Rigidbody>().AddForce(_firePoint.forward * BulletForce);
-
-            time = 0;
-        }*/
+            //Click Derecho para crear bombas e izq para crear bolas de fuego
+            if (Input.GetMouseButton(1) && timeBomb >= nextTimeBomb&&activeBombs<=maxBombs)
+            {
+                // Debug.Log("Boom");
+                Bombs();
+                timeBomb = 0;
+            }
+           
+        }
     }
 
     private void FireBall()
@@ -81,9 +75,14 @@ public class StaffScript : MonoBehaviour
 
     private void Bombs()
     {
-        GameObject rico = bombPool.GetFromPool();
-        bombPool.transform.position = _firePoint.position;
-        bombPool.transform.rotation = Quaternion.identity;
+        GameObject bomb = bombPool.GetFromPool();
+        bomb.transform.position = _firePoint.position;
+        bomb.transform.rotation = Quaternion.identity;
+        activeBombs++; // Increment active bomb count
     }
-    
+
+    public void HandleBombReturned()
+    {
+        activeBombs--; // Decrement active bomb count when bomb returns to pool
+    }
 }

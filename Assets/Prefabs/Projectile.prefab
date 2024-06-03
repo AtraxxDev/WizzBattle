@@ -9811,4 +9811,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lifeTime: 3
   RgbMagic: {fileID: 2682391285991677845}
-  NumOfBounces: 3
+  NumOfBounces: 5
