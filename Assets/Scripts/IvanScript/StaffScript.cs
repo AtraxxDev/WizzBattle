@@ -9,6 +9,7 @@ public class StaffScript : MonoBehaviour
     [SerializeField] private Transform _firePoint;
     [SerializeField] private Transform _bombPoint;
     [SerializeField] private PlayerMovement _playerRef;
+    [SerializeField] private Animator playerAnim;
     public ObjectPool bulletPool;
     public BombPool bombPool;
     //public GameObject Bullet;
@@ -31,6 +32,7 @@ public class StaffScript : MonoBehaviour
         nextTimeFire = 1 / FireRate;
         nextTimeBomb = 1 / BombRate;
         _playerRef = GetComponent<PlayerMovement>();
+        playerAnim=GetComponent<Animator>();
         //GameObject bulletPools = GameObject.Find("ObjectPool2");
         //  if(bulletPools != null )
         //bulletPool = bulletPools.GetComponent<ObjectPool>();
@@ -45,6 +47,7 @@ public class StaffScript : MonoBehaviour
             if (Input.GetMouseButton(0) && time >= nextTimeFire)
             {
                 //Debug.Log("Pum");
+                playerAnim.SetTrigger("Attack");
                 FireBall();
                 time = 0;
             }
@@ -52,6 +55,7 @@ public class StaffScript : MonoBehaviour
             if (Input.GetMouseButton(1) && timeBomb >= nextTimeBomb&&activeBombs<=maxBombs)
             {
                 // Debug.Log("Boom");
+                playerAnim.SetTrigger("Attack");
                 Bombs();
                 timeBomb = 0;
             }

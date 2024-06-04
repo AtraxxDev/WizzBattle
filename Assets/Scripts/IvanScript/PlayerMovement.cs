@@ -9,14 +9,15 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private LayerMask layerMask;
     [SerializeField] private float defaultLength = 50;
     [SerializeField] private int _numOfReflections = 2;
+    [SerializeField] private NetworkVariable<Vector3> _colorPlayer=new NetworkVariable<Vector3>();
 
     [Space]
     [Header("Lineas")]
-    [SerializeField] private LineRenderer _lineRenderer;
+    public LineRenderer _lineRenderer;
     [SerializeField] private Transform _lineTransform;
     private RaycastHit hit;
     private Ray ray;
-    private Vector3 direction;
+    private Vector3 _moveItdirection;
 
 
     [Space]
@@ -26,7 +27,7 @@ public class PlayerMovement : NetworkBehaviour
     private Rigidbody rb;
     private Camera mainCamera;
     [SerializeField]private PlayerHealth playerHealth;
-
+    public Animator playerAnim;
 
     private void Start()
     {
@@ -36,6 +37,12 @@ public class PlayerMovement : NetworkBehaviour
             mainCamera = Camera.main;
         }
         playerHealth = GetComponent<PlayerHealth>();
+        playerAnim = GetComponent<Animator>();
+    }
+
+    private void Update()
+    {
+        
     }
 
     private void FixedUpdate()
@@ -57,6 +64,15 @@ public class PlayerMovement : NetworkBehaviour
         float moveVertical = Input.GetAxisRaw("Vertical");
 
         Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+
+        if(movement==Vector3.zero)
+        {
+            playerAnim.SetFloat("Speed", 0);
+        }
+        else
+        {
+            playerAnim.SetFloat("Speed", 0.5f);
+        }
 
         rb.AddForce(Vector3.ClampMagnitude(movement, 1) * speed);
     }

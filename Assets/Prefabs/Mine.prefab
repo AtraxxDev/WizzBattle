@@ -9900,6 +9900,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifeTime: 4
+  damage: 2
   _explosionEffect: {fileID: 7173220505805864685}
   radius: 5
   explosionForce: 100

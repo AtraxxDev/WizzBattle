@@ -8,7 +8,7 @@ public class Kaboom : MonoBehaviour
 
     public float lifeTime = 5f;
     private float time;
-
+    [SerializeField] private int damage=2;
     private int destructableLayer;
 
     //[SerializeField] private AudioSource m_AudioSource;
@@ -72,7 +72,7 @@ public class Kaboom : MonoBehaviour
                 //m_AudioSource.PlayOneShot(_Hurt);                
                 rig.AddExplosionForce(explosionForce, transform.position, radius, 2f, ForceMode.Impulse);
                 PlayerHealth health = rig.gameObject.GetComponent<PlayerHealth>();
-                if (health != null) health.TakeDamage(2);
+                if (health != null) health.TakeDamage(damage);
                 //ApplyDAmage(rig.gameObject.GetComponent<Health>(); Esta función ya la tiene en PlayerHealth
             }
 
