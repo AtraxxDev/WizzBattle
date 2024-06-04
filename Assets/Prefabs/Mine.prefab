@@ -9899,7 +9899,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4396c6aecdaee4042a5cfd89ec4d7704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifeTime: 5
+  lifeTime: 4
   _explosionEffect: {fileID: 7173220505805864685}
   radius: 5
   explosionForce: 100

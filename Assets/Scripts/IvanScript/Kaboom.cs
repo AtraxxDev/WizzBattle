@@ -75,8 +75,21 @@ public class Kaboom : MonoBehaviour
                 if (health != null) health.TakeDamage(2);
                 //ApplyDAmage(rig.gameObject.GetComponent<Health>(); Esta función ya la tiene en PlayerHealth
             }
+
+            // Check if the GameObject has the tag "Destructable" and disable its BoxCollider
+            if (collider.CompareTag("Destructable"))
+            {
+                BoxCollider boxCollider = collider.GetComponent<BoxCollider>();
+                Animator boxAnimator=collider.GetComponent<Animator>();
+                if (boxCollider != null)
+                {
+                    boxCollider.enabled = false;
+                    boxAnimator.SetTrigger("Booom");
+                }
+            }
         }
-       
+
+
         yield return new WaitForSeconds(1);
 
         ReturnToPool();
