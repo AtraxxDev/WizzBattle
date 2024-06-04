@@ -127,6 +127,12 @@ public class UIManager : MonoBehaviour
  
     }
 
+    public void RefreshLobbys()
+    {
+        lobbyManager.ListLobbies(ShowLobbyList);
+
+    }
+
     private void OnQuickJoinButtonClicked()
     {
         // Implementa la funcionalidad para unirse rápidamente a un lobby
