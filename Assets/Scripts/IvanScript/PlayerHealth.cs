@@ -16,12 +16,11 @@ public class PlayerHealth : NetworkBehaviour
 
     private void Start()
     {
-        if(IsOwner)
-        {
+        
             currentLives = maxLives;
             _playerRef = GetComponent<PlayerMovement>();
             _healthAmount = Mathf.Clamp(_healthAmount, 0, maxLives);
-        }
+        
 
     }
 

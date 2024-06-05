@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.Pool;
 using UnityEngine;
 using Unity.Netcode;
+using Unity.Netcode.Components;
 
 public class StaffScript : NetworkBehaviour
 {
@@ -11,14 +12,14 @@ public class StaffScript : NetworkBehaviour
     [SerializeField] private Transform _bombPoint;
     [SerializeField] private PlayerMovement _playerRef;
     [SerializeField] private Animator playerAnim;
+    [SerializeField] private NetworkAnimator networkAnimator; // Añadir referencia al NetworkAnimator
     public ObjectPool bulletPool;
     public BombPool bombPool;
-    //public GameObject Bullet;
 
     [Space]
     [SerializeField] private float FireRate = 5;
     [SerializeField] private float BombRate = 2;
-    [SerializeField] private float BulletForce = 40;    
+    [SerializeField] private float BulletForce = 40;
 
     private float time;
     private float nextTimeFire;
@@ -27,25 +28,21 @@ public class StaffScript : NetworkBehaviour
     private int activeBombs;
     private const int maxBombs = 2;
 
-
     private void Start()
     {
-        if(IsOwner)
+        if (IsOwner)
         {
             nextTimeFire = 1 / FireRate;
             nextTimeBomb = 1 / BombRate;
             _playerRef = GetComponent<PlayerMovement>();
             playerAnim = GetComponent<Animator>();
+            networkAnimator = GetComponent<NetworkAnimator>(); // Obtener referencia al NetworkAnimator
         }
-       
-        //GameObject bulletPools = GameObject.Find("ObjectPool2");
-        //  if(bulletPools != null )
-        //bulletPool = bulletPools.GetComponent<ObjectPool>();
     }
 
     private void FixedUpdate()
     {
-        if(IsOwner)
+        if (IsOwner)
         {
             time += Time.deltaTime;
             timeBomb += Time.deltaTime;
@@ -53,36 +50,38 @@ public class StaffScript : NetworkBehaviour
             {
                 if (Input.GetMouseButton(0) && time >= nextTimeFire)
                 {
-                    //Debug.Log("Pum");
-                    playerAnim.SetTrigger("Attack");
-                    FireBall();
+                    networkAnimator.SetTrigger("Attack"); // Usar NetworkAnimator para sincronizar el Trigger
+                    FireBallServerRpc(_firePoint.position, _firePoint.forward);
                     time = 0;
                 }
-                //Click Derecho para crear bombas e izq para crear bolas de fuego
                 if (Input.GetMouseButton(1) && timeBomb >= nextTimeBomb && activeBombs <= maxBombs)
                 {
-                    // Debug.Log("Boom");
-                    playerAnim.SetTrigger("Attack");
+                    networkAnimator.SetTrigger("Attack"); // Usar NetworkAnimator para sincronizar el Trigger
                     Bombs();
                     timeBomb = 0;
                 }
-
             }
         }
-       
     }
 
-    private void FireBall()
+    [ServerRpc]
+    private void FireBallServerRpc(Vector3 firePointPosition, Vector3 fireDirection)
     {
-        GameObject Fire=bulletPool.GetFromPool();
-        Fire.transform.position = _firePoint.position;    
-        Fire.transform.rotation= Quaternion.identity;
+        FireBallClientRpc(firePointPosition, fireDirection);
+    }
 
-        Rigidbody bulletRB=Fire.GetComponent<Rigidbody>();
-        if(bulletRB != null)
+    [ClientRpc]
+    private void FireBallClientRpc(Vector3 firePointPosition, Vector3 fireDirection)
+    {
+        GameObject fire = bulletPool.GetFromPool();
+        fire.transform.position = firePointPosition;
+        fire.transform.rotation = Quaternion.identity;
+
+        Rigidbody bulletRB = fire.GetComponent<Rigidbody>();
+        if (bulletRB != null)
         {
             bulletRB.velocity = Vector3.zero;
-            bulletRB.AddForce(_firePoint.forward * BulletForce);
+            bulletRB.AddForce(fireDirection * BulletForce);
         }
     }
 

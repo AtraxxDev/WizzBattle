@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class ProjectileScript : MonoBehaviour
+public class ProjectileScript : NetworkBehaviour
 {
     public float lifeTime = 5f;
     private float time;
@@ -44,7 +45,7 @@ public class ProjectileScript : MonoBehaviour
 
     private void LateUpdate()
     {
-        lastVelocity=RgbMagic.velocity;
+        lastVelocity = RgbMagic.velocity;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -53,13 +54,13 @@ public class ProjectileScript : MonoBehaviour
         {
             ReturnToPool();
         }
-        if(collision.gameObject.layer==obstacLayer)
+        if (collision.gameObject.layer == obstacLayer)
         {
             if (curBounces >= NumOfBounces) return;
-            curSpeed=lastVelocity.magnitude;
+            curSpeed = lastVelocity.magnitude;
             direction = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
 
-            RgbMagic.velocity=direction*Mathf.Max(curSpeed,0);
+            RgbMagic.velocity = direction * Mathf.Max(curSpeed, 0);
             curBounces++;
         }
     }
@@ -71,7 +72,6 @@ public class ProjectileScript : MonoBehaviour
         {
             curBounces = 0;
             pool.ReturnToPool(gameObject);
-
         }
     }
 }
