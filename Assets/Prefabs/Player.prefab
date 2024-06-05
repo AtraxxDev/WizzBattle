@@ -390,9 +390,10 @@ GameObject:
   - component: {fileID: 5844387699095524653}
   - component: {fileID: 3663418263337525376}
   - component: {fileID: -5724482319456474510}
+  - component: {fileID: 758684849980693189}
   m_Layer: 7
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -514,6 +515,8 @@ MonoBehaviour:
   playerDed: 0
   speed: 1000
   playerHealth: {fileID: 0}
+  playerAnim: {fileID: 0}
+  networkAnimator: {fileID: 0}
 --- !u!114 &8741879167153361920
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -600,6 +603,13 @@ MonoBehaviour:
     TransitionIndex: 0
   - IsCrossFadeExit: 0
     Layer: 0
+    OriginatingState: 2081823275
+    DestinationState: 20298039
+    TransitionDuration: 0.25
+    TriggerNameHash: 20298039
+    TransitionIndex: 2
+  - IsCrossFadeExit: 0
+    Layer: 0
     OriginatingState: 765711723
     DestinationState: 1080829965
     TransitionDuration: 0.25
@@ -607,11 +617,18 @@ MonoBehaviour:
     TransitionIndex: 0
   - IsCrossFadeExit: 0
     Layer: 0
+    OriginatingState: 765711723
+    DestinationState: 20298039
+    TransitionDuration: 0.25
+    TriggerNameHash: 20298039
+    TransitionIndex: 2
+  - IsCrossFadeExit: 0
+    Layer: 0
     OriginatingState: 1080829965
-    DestinationState: 2081823275
-    TransitionDuration: 0
-    TriggerNameHash: 1080829965
-    TransitionIndex: 0
+    DestinationState: 20298039
+    TransitionDuration: 0.25
+    TriggerNameHash: 20298039
+    TransitionIndex: 2
   m_Animator: {fileID: 5850473448769076360}
 --- !u!114 &3663418263337525376
 MonoBehaviour:
@@ -629,6 +646,7 @@ MonoBehaviour:
   _bombPoint: {fileID: 8730738349299209294}
   _playerRef: {fileID: 0}
   playerAnim: {fileID: 0}
+  networkAnimator: {fileID: 0}
   bulletPool: {fileID: 1519020405946706358}
   bombPool: {fileID: 2938588209432243140}
   FireRate: 1
@@ -651,6 +669,18 @@ MonoBehaviour:
   _timeforRegen: 15
   _playerRef: {fileID: 4934868972377291509}
   healthBar: {fileID: 4242064383137850078}
+--- !u!114 &758684849980693189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2219793715428935574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0402bf9d0a232c8438d301895129eed2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3348413139751231219
 GameObject:
   m_ObjectHideFlags: 0
