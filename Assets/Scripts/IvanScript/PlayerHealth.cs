@@ -6,7 +6,7 @@ using Unity.Netcode;
 public class PlayerHealth : NetworkBehaviour
 {
     [SerializeField] private int maxLives = 2;
-    private int currentLives;
+    public int currentLives;
     private float _healthAmount;
     [SerializeField] private int _timeforRegen = 16;
     private Coroutine regenCoroutine;
@@ -20,38 +20,40 @@ public class PlayerHealth : NetworkBehaviour
             currentLives = maxLives;
             _playerRef = GetComponent<PlayerMovement>();
             _healthAmount = Mathf.Clamp(_healthAmount, 0, maxLives);
-
-            // Inicializa la barra de salud en el dueño del objeto
-            UpdateHealthBarClientRpc(currentLives);
         }
+    }
+
+    [ClientRpc]
+    private void UpdateHealthBarClientRpc(int lives)
+    {
+        // Actualiza la barra de salud en todos los clientes
+        healthBar.fillAmount = (float)lives / maxLives;
     }
 
     public void TakeDamage(int damage)
     {
-        if (IsServer)
+        currentLives -= damage;
+        currentLives = Mathf.Clamp(currentLives, 0, maxLives);
+        Debug.Log($"Player took damage. Current lives: {currentLives}");
+
+        // Actualiza la barra de salud en todos los clientes
+        UpdateHealthBarClientRpc(currentLives);
+
+        if (currentLives <= 0)
         {
-            currentLives -= damage;
-            currentLives = Mathf.Clamp(currentLives, 0, maxLives);
-            Debug.Log($"Player took damage. Current lives: {currentLives}");
-
-            UpdateHealthBarClientRpc(currentLives);
-
-            if (currentLives <= 0)
+            DeactivatePlayer();
+            if (regenCoroutine != null)
             {
-                DeactivatePlayer();
-                if (regenCoroutine != null)
-                {
-                    StopCoroutine(regenCoroutine);
-                }
+                StopCoroutine(regenCoroutine);
             }
-            else
+        }
+        else
+        {
+            if (regenCoroutine != null)
             {
-                if (regenCoroutine != null)
-                {
-                    StopCoroutine(regenCoroutine);
-                }
-                regenCoroutine = StartCoroutine(RegenerateLife());
+                StopCoroutine(regenCoroutine);
             }
+            regenCoroutine = StartCoroutine(RegenerateLife());
         }
     }
 
@@ -59,18 +61,16 @@ public class PlayerHealth : NetworkBehaviour
     {
         yield return new WaitForSeconds(_timeforRegen);
 
-        if (IsServer)
+        currentLives += 1;
+        currentLives = Mathf.Clamp(currentLives, 0, maxLives);
+        Debug.Log($"Player regenerated a life. Current lives: {currentLives}");
+
+        // Actualiza la barra de salud en todos los clientes
+        UpdateHealthBarClientRpc(currentLives);
+
+        if (currentLives < maxLives)
         {
-            currentLives += 1;
-            currentLives = Mathf.Clamp(currentLives, 0, maxLives);
-            Debug.Log($"Player regenerated a life. Current lives: {currentLives}");
-
-            UpdateHealthBarClientRpc(currentLives);
-
-            if (currentLives < maxLives)
-            {
-                regenCoroutine = StartCoroutine(RegenerateLife());
-            }
+            regenCoroutine = StartCoroutine(RegenerateLife());
         }
     }
 
@@ -80,14 +80,7 @@ public class PlayerHealth : NetworkBehaviour
         _playerRef.playerDed = true;
         _playerRef.playerAnim.SetTrigger("Die");
         _playerRef._lineRenderer.enabled = false;
-    }
-
-    [ClientRpc]
-    private void UpdateHealthBarClientRpc(int newLives)
-    {
-        // Actualiza la barra de salud en todos los clientes
-        _healthAmount = newLives;
-        healthBar.fillAmount = (float)_healthAmount / maxLives;
+        //gameObject.SetActive(false);
     }
 
     public int GetCurrentLives()
