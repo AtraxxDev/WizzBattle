@@ -30,10 +30,17 @@ public class NetworkDisconnectHandler : MonoBehaviour
         }
     }
 
+    
+
     private void OnServerStopped(bool wasShutdown)
     {
         Debug.Log($"Server stopped. Clean shutdown: {wasShutdown}. Returning to menu.");
         ReturnToMenu();
+    }
+
+    public void DisconnectFromLobby()
+    {
+        OnClientDisconnect(NetworkManager.Singleton.LocalClientId);
     }
 
     public void ReturnToMenu()
