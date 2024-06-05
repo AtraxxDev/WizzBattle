@@ -8,6 +8,8 @@ TagManager:
   - Bomb
   - Destructable
   - Coin
+  - WinPanel
+  - LosePanel
   layers:
   - Default
   - TransparentFX

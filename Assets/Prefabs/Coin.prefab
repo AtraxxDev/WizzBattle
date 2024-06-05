@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5899496075425182899}
   - component: {fileID: 4747206157759039757}
   - component: {fileID: 7814314495409575536}
+  - component: {fileID: 572837289902539648}
   m_Layer: 0
   m_Name: Coin
   m_TagString: Coin
@@ -118,3 +119,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21f1fbd5b65edcd499532d1322c6395c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &572837289902539648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8686787378634333738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 290142988
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
