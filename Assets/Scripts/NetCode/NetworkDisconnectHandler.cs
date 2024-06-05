@@ -30,7 +30,11 @@ public class NetworkDisconnectHandler : MonoBehaviour
         }
     }
 
-    
+
+    public void discconnect()
+    {
+        OnClientDisconnect(NetworkManager.Singleton.LocalClientId);
+    }
 
     private void OnServerStopped(bool wasShutdown)
     {
@@ -38,15 +42,10 @@ public class NetworkDisconnectHandler : MonoBehaviour
         ReturnToMenu();
     }
 
-    public void DisconnectFromLobby()
-    {
-        OnClientDisconnect(NetworkManager.Singleton.LocalClientId);
-    }
+
 
     public void ReturnToMenu()
     {
         m_UIManager.bg.SetActive(true);
-        // Carga la escena de menú (asegúrate de que la escena esté incluida en Build Settings)
-       // SceneManager.LoadScene("MenuScene");
     }
 }
