@@ -80,11 +80,11 @@ public class Kaboom : MonoBehaviour
             if (collider.CompareTag("Destructable"))
             {
                 BoxCollider boxCollider = collider.GetComponent<BoxCollider>();
-                Animator boxAnimator=collider.GetComponent<Animator>();
+                //Animator boxAnimator=collider.GetComponent<Animator>();
                 if (boxCollider != null)
                 {
                     boxCollider.enabled = false;
-                    boxAnimator.SetTrigger("Booom");
+                   // boxAnimator.SetTrigger("Booom");
                 }
             }
         }

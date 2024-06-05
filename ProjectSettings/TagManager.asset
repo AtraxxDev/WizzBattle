@@ -10,6 +10,7 @@ TagManager:
   - Coin
   - WinPanel
   - LosePanel
+  - btn
   layers:
   - Default
   - TransparentFX

@@ -20,7 +20,7 @@ public class NetworkDisconnectHandler : MonoBehaviour
         }
     }
 
-    private void OnClientDisconnect(ulong clientId)
+    public void OnClientDisconnect(ulong clientId)
     {
         if (clientId == NetworkManager.Singleton.LocalClientId)
         {
@@ -36,7 +36,7 @@ public class NetworkDisconnectHandler : MonoBehaviour
         ReturnToMenu();
     }
 
-    private void ReturnToMenu()
+    public void ReturnToMenu()
     {
         m_UIManager.bg.SetActive(true);
         // Carga la escena de menú (asegúrate de que la escena esté incluida en Build Settings)
