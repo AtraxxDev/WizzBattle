@@ -1,8 +1,10 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using Unity.Netcode;
 
-public class PlayerHealth : MonoBehaviour
+
+public class PlayerHealth : NetworkBehaviour
 {
     [SerializeField] private int maxLives = 2;
     public int currentLives;
@@ -14,9 +16,13 @@ public class PlayerHealth : MonoBehaviour
 
     private void Start()
     {
-        currentLives = maxLives;     
-        _playerRef = GetComponent<PlayerMovement>();        
-        _healthAmount = Mathf.Clamp(_healthAmount, 0, maxLives);
+        if(IsOwner)
+        {
+            currentLives = maxLives;
+            _playerRef = GetComponent<PlayerMovement>();
+            _healthAmount = Mathf.Clamp(_healthAmount, 0, maxLives);
+        }
+
     }
 
     public void TakeDamage(int damage)

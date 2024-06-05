@@ -31,14 +31,16 @@ public class PlayerMovement : NetworkBehaviour
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
+       
         if (IsOwner)
         {
+            rb = GetComponent<Rigidbody>();
             mainCamera = Camera.main;
+            playerHealth = GetComponent<PlayerHealth>();
+            playerAnim = GetComponent<Animator>();
         }
-        playerHealth = GetComponent<PlayerHealth>();
-        playerAnim = GetComponent<Animator>();
     }
+     
 
     private void Update()
     {
@@ -125,15 +127,14 @@ public class PlayerMovement : NetworkBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Projectile"))
+        if(IsOwner)
         {
-            playerHealth.TakeDamage(1);
-           // Debug.Log(playerHealth.ToString());
+            if (collision.gameObject.CompareTag("Projectile"))
+            {
+                playerHealth.TakeDamage(1);
+                // Debug.Log(playerHealth.ToString());
+            }
         }
-        /*if(collision.gameObject.CompareTag("Bomb"))
-        {
-            playerHealth.TakeDamage(2);
-        }*/
 
     }
 

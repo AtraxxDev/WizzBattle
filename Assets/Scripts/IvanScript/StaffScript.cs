@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Pool;
 using UnityEngine;
+using Unity.Netcode;
 
-public class StaffScript : MonoBehaviour
+public class StaffScript : NetworkBehaviour
 {
     [Header("Ref")]
     [SerializeField] private Transform _firePoint;
@@ -29,10 +30,14 @@ public class StaffScript : MonoBehaviour
 
     private void Start()
     {
-        nextTimeFire = 1 / FireRate;
-        nextTimeBomb = 1 / BombRate;
-        _playerRef = GetComponent<PlayerMovement>();
-        playerAnim=GetComponent<Animator>();
+        if(IsOwner)
+        {
+            nextTimeFire = 1 / FireRate;
+            nextTimeBomb = 1 / BombRate;
+            _playerRef = GetComponent<PlayerMovement>();
+            playerAnim = GetComponent<Animator>();
+        }
+       
         //GameObject bulletPools = GameObject.Find("ObjectPool2");
         //  if(bulletPools != null )
         //bulletPool = bulletPools.GetComponent<ObjectPool>();
@@ -40,27 +45,31 @@ public class StaffScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        time += Time.deltaTime;
-        timeBomb+=Time.deltaTime;
-        if(!_playerRef.playerDed)
+        if(IsOwner)
         {
-            if (Input.GetMouseButton(0) && time >= nextTimeFire)
+            time += Time.deltaTime;
+            timeBomb += Time.deltaTime;
+            if (!_playerRef.playerDed)
             {
-                //Debug.Log("Pum");
-                playerAnim.SetTrigger("Attack");
-                FireBall();
-                time = 0;
+                if (Input.GetMouseButton(0) && time >= nextTimeFire)
+                {
+                    //Debug.Log("Pum");
+                    playerAnim.SetTrigger("Attack");
+                    FireBall();
+                    time = 0;
+                }
+                //Click Derecho para crear bombas e izq para crear bolas de fuego
+                if (Input.GetMouseButton(1) && timeBomb >= nextTimeBomb && activeBombs <= maxBombs)
+                {
+                    // Debug.Log("Boom");
+                    playerAnim.SetTrigger("Attack");
+                    Bombs();
+                    timeBomb = 0;
+                }
+
             }
-            //Click Derecho para crear bombas e izq para crear bolas de fuego
-            if (Input.GetMouseButton(1) && timeBomb >= nextTimeBomb&&activeBombs<=maxBombs)
-            {
-                // Debug.Log("Boom");
-                playerAnim.SetTrigger("Attack");
-                Bombs();
-                timeBomb = 0;
-            }
-           
         }
+       
     }
 
     private void FireBall()
