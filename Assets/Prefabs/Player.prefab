@@ -681,6 +681,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0402bf9d0a232c8438d301895129eed2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  winPanelTag: WinPanel
+  losePanelTag: LosePanel
 --- !u!1 &3348413139751231219
 GameObject:
   m_ObjectHideFlags: 0
@@ -1158,7 +1160,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 4874126678125670354, guid: be172da5d6f9b5e4786d78a47cd78cbd, type: 3}
+  - {fileID: 2100000, guid: 5070084185039ef49a5123b5cb7135e2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1681,7 +1683,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 4874126678125670354, guid: be172da5d6f9b5e4786d78a47cd78cbd, type: 3}
+  - {fileID: 2100000, guid: 5070084185039ef49a5123b5cb7135e2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
